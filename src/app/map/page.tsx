@@ -12,16 +12,14 @@ import {
   Input,
   Button,
 } from "@chakra-ui/react";
-import styles from "./page.module.css";
+// import styles from "./page.module.css";
 import { FaUserAlt, FaLock } from "react-icons/fa";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
   const CFaUserAlt = chakra(FaUserAlt);
-  const router = useRouter();
 
   return (
-    <main className={styles.main}>
+    <main>
       <Flex
         flexDirection="column"
         width="100wh"
@@ -49,7 +47,7 @@ export default function Home() {
                 borderRadius={'lg'}
               >
                 <Input placeholder="token" size="lg" />
-                <Button onClick={() => router.push('/note')}>Login</Button>
+                <Button>Login</Button>
               </Stack>
             </form>
           </Box>
