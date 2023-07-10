@@ -8,14 +8,25 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
+  Input,
+  VStack,
+  FormControl,
+  FormLabel,
+  FormHelperText,
 } from "@chakra-ui/react";
+import { useState } from "react";
 
-interface NoteModalProps {
+interface ScrapModalProps {
   isOpen: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const NoteModal = (props: NoteModalProps) => {
+const ScrapModal = (props: ScrapModalProps) => {
   const { isOpen, setOpen } = props;
+
+  const [title, setTitle] = useState("");
+  const [link, setLink] = useState("");
+  const [map, setMap] = useState("");
+  const [tag, setTag] = useState("");
 
   const onClose = () => {
     setOpen(false);
@@ -25,10 +36,28 @@ const NoteModal = (props: NoteModalProps) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>したいこと</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <p>
+            <VStack spacing={4}>
+              <Input
+                placeholder="タイトル"
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+              />
+              <Input
+                placeholder="参考リンク"
+                onChange={(e) => setLink(e.target.value)}
+              ></Input>
+              <Input
+                placeholder="Google Map"
+                onChange={(e) => setMap(e.target.value)}
+              ></Input>
+              <Input placeholder="タグ"></Input>
+            </VStack>
+
+            {/* <p>
               Sit nulla est ex deserunt exercitation anim occaecat. Nostrud
               ullamco deserunt aute id consequat veniam incididunt duis in sint
               irure nisi. Mollit officia cillum Lorem ullamco minim nostrud elit
@@ -39,14 +68,14 @@ const NoteModal = (props: NoteModalProps) => {
               aliqua enim laboris do dolor eiusmod. Et mollit incididunt nisi
               consectetur esse laborum eiusmod pariatur proident Lorem eiusmod
               et. Culpa deserunt nostrud ad veniam.
-            </p>
+            </p> */}
           </ModalBody>
 
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
+              とじる
             </Button>
-            <Button variant="ghost">Secondary Action</Button>
+            <Button variant="ghost">登録</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -54,4 +83,4 @@ const NoteModal = (props: NoteModalProps) => {
   );
 };
 
-export default NoteModal;
+export default ScrapModal;

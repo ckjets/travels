@@ -1,4 +1,5 @@
 "use client";
+import { PrismaClient } from "@prisma/client";
 
 import Image from "next/image";
 import { Inter } from "@next/font/google";
@@ -15,10 +16,29 @@ import {
 import styles from "./page.module.css";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { GetStaticProps } from "next";
+import { useEffect, useState } from "react";
+import gql from "graphql-tag";
+import { useQuery, useMutation } from "@apollo/client";
 
 export default function Home() {
   const CFaUserAlt = chakra(FaUserAlt);
   const router = useRouter();
+
+  const LOGIN_TRAVEL_BY_TOKEN = gql`
+    mutation LoginToravelByToken($token: String!) {
+      loginTravelByToken(token: $token) {
+        id
+        name
+        token
+      }
+    }
+  `;
+  const [mutateFunction, { data, loading, error }] = useMutation(
+    LOGIN_TRAVEL_BY_TOKEN
+  );
+
+  const [token, setToken] = useState("");
 
   return (
     <main className={styles.main}>
@@ -39,17 +59,42 @@ export default function Home() {
           <Heading as="h1" size="lg" mt={4}>
             Welcome
           </Heading>
-          <Box minW={{  md: "468px" }}>
-            <form>
+          <Box minW={{ md: "468px" }}>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                mutateFunction({
+                  onCompleted: (data) => {
+                    console.log('data!!!!!!!!!', data);
+                    router.push(`${token}/scrap`);
+                  },
+                  onError: (error) => {
+                    console.log(error);
+                  },
+                  variables: {
+                    token: token,
+                  },
+                });
+              }}
+            >
               <Stack
                 spacing={4}
                 p="1rem"
                 backgroundColor="whiteAlpha.900"
                 boxShadow="md"
-                borderRadius={'lg'}
+                borderRadius={"lg"}
               >
-                <Input placeholder="token" size="lg" />
-                <Button onClick={() => router.push('/note')}>Login</Button>
+                <Input
+                  placeholder="token"
+                  size="lg"
+                  onChange={(e) => {
+                    setToken(e.target.value);
+                  }}
+                />
+                <Button type="submit" isLoading={loading}>
+                  Login
+                </Button>
+                {error && <p>Travelがありません</p>}
               </Stack>
             </form>
           </Box>

@@ -1,0 +1,39 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:14.3
+    volumes:
+      - db-store:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      TZ: 'Asia/Tokyo'
+      POSTGRES_USER: 'db-user'
+      POSTGRES_HOST_AUTH_METHOD: 'trust'
+      POSTGRES_PASSWORD: ''
+      POSTGRES_DB: 'app-db'
+    networks:
+      - tmp_network
+
+  testing-postgres:
+    image: postgres:14.3
+    environment:
+      TZ: 'Asia/Tokyo'
+      POSTGRES_USER: 'testing-user'
+      POSTGRES_HOST_AUTH_METHOD: 'trust'
+      POSTGRES_PASSWORD: ''
+      POSTGRES_DB: 'testing-db'
+    volumes:
+      - testing-db-store:/var/lib/postgresql/data
+    ports:
+      - "6543:5432"
+    networks:
+      - tmp_network
+
+volumes:
+  db-store:
+  testing-db-store:
+
+networks:
+  tmp_network:
+    driver: bridge

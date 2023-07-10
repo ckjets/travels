@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { createContext, useState } from "react";
-import { useNoteContext, NoteContextProvider } from "@/app/context/note";
+import { useScrapContext, ScrapContextProvider } from "@/app/context/scrap";
 
 export default function RootLayout({
   children,
@@ -24,13 +24,13 @@ export default function RootLayout({
       <head />
       <body>
         {/* <ChakraProvider> */}
-        <NoteContextProvider>
+        <ScrapContextProvider>
           {/* <div style={{ width: 480, height: "100%", margin: "auto" }}> */}
-            {/* {pathname !== "/" && <Header />} */}
-            {children}
-            {/* {pathname !== "/" && <Footer />} */}
+          {/* {pathname !== "/" && <Header />} */}
+          {children}
+          {/* {pathname !== "/" && <Footer />} */}
           {/* </div> */}
-        </NoteContextProvider>
+        </ScrapContextProvider>
         {/* </ChakraProvider> */}
       </body>
     </html>

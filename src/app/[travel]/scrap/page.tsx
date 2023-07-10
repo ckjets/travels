@@ -20,18 +20,20 @@ import {
 import { FaMapMarkerAlt, FaExternalLinkAlt, FaPen } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import Header from "./Header";
-import { useState } from "react";
-import NoteModal from "@/components/NoteModal";
-import { useNoteContext } from "../context/note";
+import { useEffect, useState } from "react";
+import ScrapModal from "@/components/ScrapModal";
+import { useScrapContext } from "../../context/scrap";
 import Footer from "@/components/Footer";
+import { apolloClient } from "../../../graphql/client";
 
-export default function Note() {
-  const { isOpenNoteModal, setIsOpenNoteModal } = useNoteContext();
+export default function Scrap() {
+  const { isOpenScrapModal, setIsOpenScrapModal } = useScrapContext();
+
   return (
     <>
       {/* headerの高さ分だけpaddingを設定 */}
       <main>
-        <div style={{ width: 480, height: "100%", margin: "auto" }}>
+        <Box maxW={480} style={{ height: "100%", margin: "auto" }}>
           <Header />
           <div style={{ paddingTop: 80 }}>
             <VStack
@@ -47,10 +49,9 @@ export default function Note() {
             </VStack>
           </div>
           <Footer />
-        </div>
+        </Box>
       </main>
-      <NoteModal isOpen={isOpenNoteModal} setOpen={setIsOpenNoteModal} />
-
+      <ScrapModal isOpen={isOpenScrapModal} setOpen={setIsOpenScrapModal} />
     </>
   );
 }

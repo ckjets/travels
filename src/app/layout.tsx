@@ -7,13 +7,15 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { apolloClient } from "../graphql/client";
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-
   return (
     <html lang="ja">
       {/*
@@ -24,11 +26,14 @@ export default function RootLayout({
 
       <body>
         <ChakraProvider>
-          {/* <div style={{ width: 480, height: "100%", margin: "auto" }}> */}
+          <ApolloProvider client={apolloClient}>
+            {/* <div style={{ width: 480, height: "100%", margin: "auto" }}> */}
             {/* {pathname !== "/" && <Header />} */}
             {children}
             {/* {pathname !== "/" && <Footer />} */}
-          {/* </div> */}
+            {/* </div> */}
+          </ApolloProvider>
+          ,
         </ChakraProvider>
       </body>
     </html>

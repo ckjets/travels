@@ -39,7 +39,7 @@ const Footer: FC = () => {
     //     3
     //   </Box>
     // </Stack>
-    <Box style={{ position: "fixed", bottom: 0}} minWidth={480}>
+    <Box style={{ position: "fixed", bottom: 0}} maxW={480}>
       <Box
         minW={{ md: "468px" }}
         height={120}
@@ -47,7 +47,7 @@ const Footer: FC = () => {
         background={"gray.100"}
       >
         <Flex justifyContent="center" alignItems="center">
-          <Box p={10} as="button" onClick={() => router.push("/note")}>
+          <Box p={10} as="button" onClick={() => router.push("/scrap")}>
             <StarIcon w={10} h={10} />
           </Box>
           <Box p={10} as="button">
