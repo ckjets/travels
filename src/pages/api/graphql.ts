@@ -21,6 +21,23 @@ const resolvers = {
   },
   // データの更新のための関数
   Mutation: {
+    createTravel: async (parent, args) => {
+      try {
+        const travel = await prisma.travel.create({
+          data: {
+            name: args.name,
+            // ランダムの英語と数字を混ぜた文字列を生成する
+            token: Math.random().toString(36).slice(-8),
+            startDate: args.startDate,
+            endDate: args.endDate,
+          },
+        });
+        return travel;
+      } catch (e) {
+        console.log(e);
+        throw e;
+      }
+    },
     loginTravelByToken: async (parent, args) => {
       try {
         const data = await prisma.travel.findUniqueOrThrow({
@@ -34,7 +51,7 @@ const resolvers = {
       }
     },
     // Travelに紐づくScrapを登録する
-    createScrap: async (parent, args) => { 
+    createScrap: async (parent, args) => {
       try {
         const data = await prisma.scrap.create({
           data: {
@@ -47,7 +64,7 @@ const resolvers = {
       } catch (e) {
         throw e;
       }
-    }
+    },
   },
 };
 
@@ -59,15 +76,17 @@ const typeDefs = gql`
     id: Int
     name: String
     token: String
+    startDate: String
+    endDate: String
   }
 
   type Scrap {
-    id:      Int
+    id: Int
     travelId: Int
-    title:    String
-    url:      String
-    mapUrl:   String
-    Travel:   Travel
+    title: String
+    url: String
+    mapUrl: String
+    Travel: Travel
   }
 
   type Query {
@@ -78,6 +97,7 @@ const typeDefs = gql`
   type Mutation {
     loginTravelByToken(token: String!): Travel
     createScrap(title: String!, url: String!, travelId: Int!): Scrap
+    createTravel(name: String!, startDate: String!, endDate: String!): Travel
   }
 `;
 
