@@ -31,28 +31,39 @@ export default function Create() {
   const CFaUserAlt = chakra(FaUserAlt);
   const router = useRouter();
 
-  const LOGIN_TRAVEL_BY_TOKEN = gql`
-    mutation LoginToravelByToken($token: String!) {
-      loginTravelByToken(token: $token) {
-        id
-        name
+  const CREATE_TRAVEL_BY_TOKEN = gql`
+    mutation CreateTravel(
+      $name: String!
+      $startDate: String!
+      $endDate: String!
+    ) {
+      createTravel(name: $name, startDate: $startDate, endDate: $endDate) {
         token
       }
     }
   `;
-  const [mutateFunction, { data, loading, error }] = useMutation(
-    LOGIN_TRAVEL_BY_TOKEN
+  const [mutate, { data, loading, error }] = useMutation(
+    CREATE_TRAVEL_BY_TOKEN
   );
 
-  const [token, setToken] = useState("");
+  const [travelName, setTravelName] = useState("");
 
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
+
+  useEffect(() => {
+    console.log("update", dateRange);
+  }, [dateRange]);
+
+  useEffect(() => {
+    console.log("data in useEffect!!!", data);
+  }, [data]);
 
   return (
     // <main className={styles.main}>
 
     <>
+      {/* @ts-ignore */}
       <Flex
         flexDirection="column"
         width="100wh"
@@ -74,16 +85,18 @@ export default function Create() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                mutateFunction({
+                mutate({
                   onCompleted: (data) => {
-                    console.log("data!!!!!!!!!", data);
-                    router.push(`${token}/scrap`);
+                    console.log("data!!", data);
+                    router.push(`${data.createTravel.token}/scrap`);
                   },
                   onError: (error) => {
                     console.log(error);
                   },
                   variables: {
-                    token: token,
+                    name: travelName,
+                    startDate: startDate,
+                    endDate: endDate,
                   },
                 });
               }}
@@ -93,7 +106,6 @@ export default function Create() {
                 p="1rem"
                 backgroundColor="whiteAlpha.900"
                 boxShadow="md"
-                Radius={"lg"}
               >
                 <Heading as="h2" size="md" mt={4}>
                   旅の名前を教えてください
@@ -102,7 +114,7 @@ export default function Create() {
                   placeholder="日本一周旅行"
                   size="lg"
                   onChange={(e) => {
-                    setToken(e.target.value);
+                    setTravelName(e.target.value);
                   }}
                 />
                 <Heading as="h2" size="md" mt={4}>
@@ -123,7 +135,7 @@ export default function Create() {
                         size={"lg"}
                         marginEnd={16}
                         onChange={(e) => {
-                          setToken(e.target.value);
+                          setTravelName(e.target.value);
                         }}
                       />
                     }
