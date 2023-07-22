@@ -17,8 +17,12 @@ import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { FaStar, FaMapMarkedAlt, FaRegCalendarAlt } from "react-icons/fa";
 
-// 追加
-const Footer: FC = () => {
+interface FooterProps {
+  token: string;
+}
+const Footer = (props: FooterProps) => {
+  const { token } = props;
+
   // 追加 カラーモードを切り替える
   const { colorMode, toggleColorMode } = useColorMode();
   const StarIcon = chakra(FaStar);
@@ -39,7 +43,7 @@ const Footer: FC = () => {
     //     3
     //   </Box>
     // </Stack>
-    <Box style={{ position: "fixed", bottom: 0}} maxW={480}>
+    <Box style={{ position: "fixed", bottom: 0 }} maxW={480}>
       <Box
         minW={{ md: "468px" }}
         height={120}
@@ -47,17 +51,21 @@ const Footer: FC = () => {
         background={"gray.100"}
       >
         <Flex justifyContent="center" alignItems="center">
-          <Box p={10} as="button" onClick={() => router.push("/scrap")}>
+          <Box p={10} as="button" onClick={() => router.push(`${token}/scrap`)}>
             <StarIcon w={10} h={10} />
           </Box>
           <Box p={10} as="button">
-            <MapIcon w={10} h={10} onClick={() => router.push("/map")} />
+            <MapIcon
+              w={10}
+              h={10}
+              onClick={() => router.push(`${token}/map`)}
+            />
           </Box>
           <Box p={10} as="button">
             <CalenderIcon
               w={10}
               h={10}
-              onClick={() => router.push("/itinerary")}
+              onClick={() => router.push(`${token}/itinerary`)}
             />
           </Box>
         </Flex>

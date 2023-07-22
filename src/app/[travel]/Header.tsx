@@ -16,7 +16,7 @@ import { FC, useState } from "react";
 // 追加
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { FaPlus } from "react-icons/fa";
-import { useScrapContext } from "../../context/scrap";
+import { useScrapContext } from "../context/scrap";
 
 const Header: FC = () => {
   const { setIsOpenScrapModal } = useScrapContext();

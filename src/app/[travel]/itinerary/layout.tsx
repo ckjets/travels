@@ -1,16 +1,14 @@
 "use client";
 
-import "./globals.css";
 // 1. import `ChakraProvider` component
 import { ChakraProvider } from "@chakra-ui/react";
 import { ThemeProvider } from "@mui/material/styles";
 import { createTheme } from "@mui/material/styles";
-import { usePathname } from "next/navigation";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { apolloClient } from "../graphql/client";
 
+import { usePathname } from "next/navigation";
+
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 export default function RootLayout({
   children,
@@ -29,17 +27,19 @@ export default function RootLayout({
       <head />
 
       <body>
-        {/* <ThemeProvider theme={theme}> */}
-        <ChakraProvider>
-          <ApolloProvider client={apolloClient}>
+        <ThemeProvider theme={theme}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            {/* <ChakraProvider> */}
+            {/* <ApolloProvider client={apolloClient}> */}
             {/* <div style={{ width: 480, height: "100%", margin: "auto" }}> */}
             {/* {pathname !== "/" && <Header />} */}
             {children}
             {/* {pathname !== "/" && <Footer />} */}
             {/* </div> */}
-          </ApolloProvider>
-        </ChakraProvider>
-        {/* </ThemeProvider> */}
+            {/* </ApolloProvider> */}
+            {/* </ChakraProvider> */}
+          </LocalizationProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

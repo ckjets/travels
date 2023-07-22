@@ -25,6 +25,10 @@ import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/client";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import {
+  getSessionStorageItem,
+  saveSessionStorageItem,
+} from "@/utils/sessionStorage";
 // import "../css/date-picker.css";
 
 export default function Create() {
@@ -89,7 +93,12 @@ export default function Create() {
                   onCompleted: (data) => {
                     console.log("data!!", data);
                     router.push(`${data.createTravel.token}/scrap`);
+                    saveSessionStorageItem(
+                      "travelToken",
+                      data.createTravel.token
+                    );
                   },
+
                   onError: (error) => {
                     console.log(error);
                   },
@@ -122,11 +131,11 @@ export default function Create() {
                 </Heading>
                 <FormControl>
                   <DatePicker
-                    // className="react-datapicker__input-text"
                     selectsRange={true}
                     startDate={startDate}
                     endDate={endDate}
                     onChange={(update) => {
+                      // @ts-ignore
                       setDateRange(update);
                     }}
                     isClearable={true}
