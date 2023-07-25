@@ -24,13 +24,15 @@ export default function RootLayout({
       <head />
       <body>
         {/* <ChakraProvider> */}
-        <ScrapContextProvider>
-          {/* <div style={{ width: 480, height: "100%", margin: "auto" }}> */}
-          {/* {pathname !== "/" && <Header />} */}
-          {children}
-          {/* {pathname !== "/" && <Footer />} */}
-          {/* </div> */}
-        </ScrapContextProvider>
+          <ScrapContextProvider>
+            <Header />
+
+            {/* <div style={{ width: 480, height: "100%", margin: "auto" }}> */}
+            {/* {pathname !== "/" && <Header />} */}
+            {children}
+            {/* {pathname !== "/" && <Footer />} */}
+            {/* </div> */}
+          </ScrapContextProvider>
         {/* </ChakraProvider> */}
       </body>
     </html>

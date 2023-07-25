@@ -20,6 +20,7 @@ import { GetStaticProps } from "next";
 import { useEffect, useState } from "react";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/client";
+import { saveSessionStorageItem } from "@/utils/sessionStorage";
 
 export default function Home() {
   const CFaUserAlt = chakra(FaUserAlt);
@@ -65,7 +66,8 @@ export default function Home() {
                 e.preventDefault();
                 mutateFunction({
                   onCompleted: (data) => {
-                    console.log('data!!!!!!!!!', data);
+                    console.log("data!!!!!!!!!", data);
+                    saveSessionStorageItem("travelToken", token);
                     router.push(`${token}/scrap`);
                   },
                   onError: (error) => {

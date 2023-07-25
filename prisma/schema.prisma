@@ -33,12 +33,31 @@ model User {
 }
 
 model Travel {
-  id        Int      @id @default(autoincrement())
-  name      String?  @db.VarChar(255)
-  token     String   @unique @db.VarChar(255)
-  startDate DateTime @db.Timestamp(6)
-  endDate   DateTime @db.Timestamp(6)
+  id        Int         @id @default(autoincrement())
+  name      String?     @db.VarChar(255)
+  token     String      @unique @db.VarChar(255)
+  startDate DateTime    @db.Timestamp(6)
+  endDate   DateTime    @db.Timestamp(6)
+  Itinerary Itinerary[]
   Scrap     Scrap[]
+}
+
+model Itinerary {
+  id       Int        @id @default(autoincrement())
+  travelId Int
+  date     DateTime   @db.Timestamp(6)
+  travel   Travel     @relation(fields: [travelId], references: [id])
+  schedule Schedule[]
+}
+
+model Schedule {
+  id          Int       @id @default(autoincrement())
+  itineraryId Int
+  title       String    @db.VarChar(255)
+  memo        String?   @db.VarChar(255)
+  map         String?   @db.VarChar(255)
+  startTime   DateTime  @db.Timestamp(6)
+  itinerary   Itinerary @relation(fields: [itineraryId], references: [id])
 }
 
 model Scrap {

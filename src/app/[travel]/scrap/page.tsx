@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { FaMapMarkerAlt, FaExternalLinkAlt, FaPen } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import Header from "./Header";
+import Header from "../Header";
 import { useEffect, useState } from "react";
 import ScrapModal from "@/components/ScrapModal";
 import { useScrapContext } from "../../context/scrap";
@@ -34,7 +34,6 @@ export default function Scrap() {
       {/* headerの高さ分だけpaddingを設定 */}
       <main>
         <Box maxW={480} style={{ height: "100%", margin: "auto" }}>
-          <Header />
           <div style={{ paddingTop: 80 }}>
             <VStack
               divider={<StackDivider borderColor="gray.200" />}
@@ -48,7 +47,7 @@ export default function Scrap() {
                 ))}
             </VStack>
           </div>
-          <Footer />
+          <Footer token="hoge" />
         </Box>
       </main>
       <ScrapModal isOpen={isOpenScrapModal} setOpen={setIsOpenScrapModal} />
