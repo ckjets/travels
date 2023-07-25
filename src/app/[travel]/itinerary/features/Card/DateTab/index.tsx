@@ -3,6 +3,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 
 interface DateTabProps {
   itineraries: { id: number; date: string }[];
@@ -14,6 +15,10 @@ interface DateTabProps {
 }
 export default function DateTab(props: DateTabProps) {
   const { itineraries, setSelectedItinerary, selectedItinerary } = props;
+
+  useEffect(() => {
+    setSelectedItinerary(itineraries[0]);
+  }, [itineraries, setSelectedItinerary]);
 
   const handleChange = (
     event: React.SyntheticEvent,

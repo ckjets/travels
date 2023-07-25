@@ -26,13 +26,16 @@ const style = {
 interface ModalProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  itinarary: {
-    id: number;
-    date: string;
-  };
+  itinarary:
+    | {
+        id: number;
+        date: string;
+      }
+    | undefined;
+  refetch: () => void;
 }
 export default function ScheduleModal(props: ModalProps) {
-  const { isOpen, setIsOpen, itinarary } = props;
+  const { isOpen, setIsOpen, itinarary, refetch } = props;
   // const [open, setOpen] = React.useState(false);
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
@@ -42,11 +45,13 @@ export default function ScheduleModal(props: ModalProps) {
     mutation createSchedule(
       $title: String!
       $startTime: String!
+      $map: String
       $itineraryId: Int!
     ) {
       createSchedule(
         title: $title
         startTime: $startTime
+        map: $map
         itineraryId: $itineraryId
       ) {
         id
@@ -57,6 +62,7 @@ export default function ScheduleModal(props: ModalProps) {
 
   const [title, setTitle] = useState("");
   const [startTime, setStartTime] = useState<Dayjs | null>(null);
+  const [map, setMap] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -64,18 +70,22 @@ export default function ScheduleModal(props: ModalProps) {
       variables: {
         title: title,
         startTime: startTime,
-        itineraryId: itinarary.id,
+        itineraryId: itinarary?.id,
+        map: "",
+      },
+      onCompleted: (data) => {
+        window.alert("追加に成功しました");
+        handleClose();
+        refetch();
+
+        // refetchしたい
       },
     });
   };
 
   useEffect(() => {
-    console.log("new Date", new Date(itinarary.date));
-  }, [itinarary.date]);
-
-  useEffect(() => {
-    setStartTime(dayjs(itinarary.date));
-  }, [itinarary.date]);
+    setStartTime(dayjs(itinarary?.date));
+  }, [itinarary?.date]);
 
   return (
     <div>
@@ -94,9 +104,8 @@ export default function ScheduleModal(props: ModalProps) {
             <Box sx={{ mt: 1 }}>
               <TimePicker
                 label="開始時間"
-                defaultValue={dayjs(itinarary.date)}
+                defaultValue={dayjs(itinarary?.date)}
                 onChange={(date) => {
-                  console.log("date", date);
                   setStartTime(date);
                 }}
               />
@@ -109,9 +118,14 @@ export default function ScheduleModal(props: ModalProps) {
                 }}
               />
             </Box>
-            {/* <Box sx={{ mt: 2 }}>
-            <TextField label="map url" />
-          </Box> */}
+            <Box sx={{ mt: 2 }}>
+              <TextField
+                label="map url"
+                onChange={(e) => {
+                  setMap(e.target.value);
+                }}
+              />
+            </Box>
             <Button variant="contained" sx={{ mt: 2 }} type="submit">
               追加
             </Button>

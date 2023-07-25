@@ -75,35 +75,36 @@ export default function Itinerary() {
       }
     }
   `;
-  const { data, loading, error } = useQuery(GET_ITINARY_BY_TOKEN, {
+  const { data, loading, error, refetch } = useQuery(GET_ITINARY_BY_TOKEN, {
     variables: { token: getSessionStorageItem("travelToken") },
   });
 
   useEffect(() => {
     if (!data) return;
-    console.log("data", data);
     const dates = data.getItinerary.map((d) => {
       return { id: d.id, date: d.date };
     });
 
     setItineraries(dates);
-    setSelectedItinerary(data.getItinerary[0].id);
-    console.log("data.getItinerary[0].id", data.getItinerary[0].id);
+    setSelectedItinerary(data.getItinerary[0]);
+    // console.log(data.getItinerary[0])
     setSchedules(data.getItinerary[0].schedule);
   }, [data]);
 
   useEffect(() => {
-    if (!data && !selectedItinerary) return;
-
-    console.log("selectedItinerary", selectedItinerary);
-    console.log("data.getItinerary", data.getItinerary);
+    if (!data) return;
 
     const targetItinerary = data.getItinerary.find(
       (d) => d.id === selectedItinerary?.id
     );
     console.log("targetItinerary", targetItinerary);
+
     setSchedules(targetItinerary?.schedule ?? []);
   }, [data, selectedItinerary]);
+
+  useEffect(() => {
+    console.log("selectedItinerary", selectedItinerary);
+  }, [selectedItinerary]);
 
   return (
     <>
@@ -136,8 +137,7 @@ export default function Itinerary() {
                           color="text.secondary"
                           sx={{ maxWidth: 100 }}
                         >
-                          {/* {dayjs(d.startTime).format("hh:mm A")} */}
-                          {dayjs(d.startTime).format("MM/DD hh:mm A")}
+                          {dayjs(d.startTime).format("hh:mm A")}
                         </TimelineOppositeContent>
                         <TimelineSeparator>
                           <TimelineDot />
@@ -157,10 +157,8 @@ export default function Itinerary() {
             <ScheduleModal
               isOpen={isOpenScheduleModal}
               setIsOpen={setIsOpenScheduleModal}
-              itinarary={{
-                id: data.getItinerary[0].id,
-                date: data.getItinerary[0].date,
-              }}
+              itinarary={selectedItinerary}
+              refetch={refetch}
             />
           </Box>
         )}

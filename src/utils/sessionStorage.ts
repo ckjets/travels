@@ -1,14 +1,19 @@
 /** セッションストレージに保存する */
 export const saveSessionStorageItem = <T>(key: string, saveItem: T) => {
-  const formatedData = JSON.stringify(saveItem);
-  window.sessionStorage.setItem(key, formatedData);
+  if (typeof window !== "undefined") {
+    const formatedData = JSON.stringify(saveItem);
+    window.sessionStorage.setItem(key, formatedData);
+  }
 };
 
 export const removeSessionStorageItem = (key: string) => {
-  window.sessionStorage.removeItem(key);
+  if (typeof window !== "undefined") {
+    window.sessionStorage.removeItem(key);
+  }
 };
 
 export const getSessionStorageItem = <T>(key: string) => {
+  if (typeof window === "undefined") return null;
   const data = window.sessionStorage.getItem(key);
   const formatedData = JSON.parse(data!);
 
@@ -16,5 +21,7 @@ export const getSessionStorageItem = <T>(key: string) => {
 };
 
 export const allClearSessionStorage = () => {
-  window.sessionStorage.clear();
+  if (typeof window !== "undefined") {
+    window.sessionStorage.clear();
+  }
 };

@@ -7,6 +7,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import RoomIcon from "@mui/icons-material/Room";
 
 interface MediaCardProps {
   data: {
@@ -49,12 +51,17 @@ export default function MediaCard(props: MediaCardProps) {
           <Typography component="div" variant="subtitle1">
             {data.title}
           </Typography>
-          <Typography variant="body1" color="text.secondary" component="div">
+          {/* <Typography variant="body1" color="text.secondary" component="div">
             Mac Miller
-          </Typography>
+          </Typography> */}
         </CardContent>
-        <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
-          test
+        <Box sx={{ display: "flex", justifyContent: "right", pl: 1, pb: 1 }}>
+          <IconButton
+            aria-label="google map"
+            onClick={() => window.alert("hello")}
+          >
+            <RoomIcon />
+          </IconButton>
         </Box>
       </Box>
     </Card>

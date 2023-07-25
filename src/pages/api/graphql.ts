@@ -66,6 +66,7 @@ const resolvers = {
         const startDate = new Date(args.startDate);
         const endDate = new Date(args.endDate);
         const diffInDays = Math.floor(
+          // @ts-ignore
           (endDate - startDate) / (1000 * 60 * 60 * 24)
         );
 
@@ -182,6 +183,7 @@ const typeDefs = gql`
     createTravel(name: String!, startDate: String!, endDate: String!): Travel
     createSchedule(
       title: String!
+      map: String
       startTime: String!
       itineraryId: Int!
     ): Schedule
